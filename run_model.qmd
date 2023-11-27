@@ -8,8 +8,12 @@ First, we need to run some R code to set up the modeling system. This is a "Quar
 
 First, we need to load some R "packages" (extensions) for travel demand modeling, which the cell below does. The first time you run this on your computer, it will probably take 5-20 minutes. After that it should only take a few seconds. Run it now.
 
-```{r}
-source("setup.R")
+If you get an error that says a package version greater than something is required, but a different version is loaded, just restart R (Session -> Restart R) and try again. If R asks you if you want to build packages from source, choose "No" (if you choose yes, it will either fail, or work but take much longer, depending on your system setup).
+
+If you get other errors from this cell, first try seeing if the rest of the model runs—some errors may not actually be a problem. If it doesn't, there is probably an issue with version compatibility between your R installation and the packages used for travel modeling. I'm happy to assist to resolve these.
+
+```{r include=FALSE}
+source("model_internals/setup.R")
 ```
 
 Next, run the cell below to load the model itself. This will take 15-60 seconds.
