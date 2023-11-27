@@ -59,3 +59,10 @@ map_trip_distribution = function (flows, timeperiod, triptype, origin_tract) {
             geom_sf(data=model$network_geo, fill="black")
 
 }
+
+get_mode_shares = function (flows_by_mode) {
+    flows_by_mode %>%
+        ungroup() %>%
+        summarize(across(c("Car", "Bike", "Walk", "Transit"), \(x) sum(x) / sum(n_trips))) %>%
+        return()
+}

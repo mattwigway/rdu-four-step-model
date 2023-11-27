@@ -10,7 +10,9 @@ First, we need to load some R "packages" (extensions) for travel demand modeling
 
 If you get an error that says a package version greater than something is required, but a different version is loaded, just restart R (Session -> Restart R) and try again. If R asks you if you want to build packages from source, choose "No" (if you choose yes, it will either fail, or work but take much longer, depending on your system setup).
 
-If you get other errors from this cell, first try seeing if the rest of the model runs—some errors may not actually be a problem. If it doesn't, there is probably an issue with version compatibility between your R installation and the packages used for travel modeling. I'm happy to assist to resolve these.
+If you get other errors from this cell, first try seeing if the rest of the model runs—some errors may not actually be a problem. If it doesn't, there is probably an issue with version compatibility between your R installation and the packages used for travel modeling. I'm happy to assist to resolve these. I also know the model will run on the computers on the second floor of Davis Library (near the Odum Institute and Research Hub).
+
+The output may appear below the cell, you may need to scroll down to see the rest of the notebook.
 
 ```{r include=FALSE}
 source("model_internals/setup.R")
@@ -34,7 +36,7 @@ I have provided several land use scenarios:
 By changing the R code below, you can change what scenario is loaded. Run the cell to load the baseline scenario.
 
 ```{r}
-landuse = load_landuse_scenario("baseline.xlsx")
+landuse = load_landuse_scenario("projected.xlsx")
 ```
 
 ## Trip generation
@@ -48,6 +50,8 @@ summary(model$production_functions$`AM Peak`$HBW)
 ```
 
 ### Attraction model, AM Peak home-based work trips
+
+`C000` is total jobs, `CNS07` is retail jobs, `CNS15` is jobs in education, and `CNS18` is jobs in accomodation and food service.
 
 ```{r}
 summary(model$attraction_functions$`AM Peak`$HBW)
@@ -111,6 +115,12 @@ Now, we can apply the mode choice model by running the cell below.
 
 ```{r}
 flows_by_mode = mode_choice(model, landuse, flows)
+```
+
+Now, by running the cell below, we can calculate mode shares. This shows the forecast proportion of all trips at all times of day taken by each mode.
+
+```{r}
+get_mode_shares(flows_by_mode)
 ```
 
 ## Network assignemnt/route choice
