@@ -1,11 +1,27 @@
-# bootstrap the R environment on Google Colab
+# bootstrap the R environment
+if (!require(devtools)) {
+    install.packages("devtools")
+    require(devtools)
+}
 devtools::install_github("mattwigway/BabysFirstFourStepModel", upgrade="never")
 
 # load libraries
 library(bf4sm)
-library(tidyverse)
-library(gtsummary)
-library(sf)
+
+if (!require(tidyverse)) {
+    install.packages("tidyverse")
+    require(tidyverse)
+}
+
+if (!require(sf)) {
+    install.packages("sf")
+    require(sf)
+}
+
+if (!require(tigris)) {
+    install.packages("tigris")
+    require(tigris)
+}
 
 # don't convert the 100k+ income category to 1e5+
 options(scipen=10)

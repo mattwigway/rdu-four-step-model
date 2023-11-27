@@ -4,7 +4,9 @@ title: Triangle Region Four Step Model
 
 This R "notebook" contains a complete (albeit highly simplified, and probably not very good for planning purposes) four-step model for the central Research Triangle region (Orange, Durham, and Wake counties), North Carolina.
 
-First, we need to run some R code to set up the modeling system.
+First, we need to run some R code to set up the modeling system. This is a "Quarto notebook," which is a file that can mix code and text. Each gray-highlighted section is R code that runs a different part of the travel demand model. You can run each part by clicking the green "play" button in the upper right of each gray-highlighted section in RStudio.
+
+The first time you run this on your computer, it will probably take 5-20 minutes. After that it should only take a few seconds.
 
 ```{r}
 source("setup.R")
@@ -13,7 +15,7 @@ source("setup.R")
 Next, we need to load the model itself.
 
 ```{r}
-model = load_model(here::here("rdu.model"))
+model = load_model("rdu.model")
 ```
 
 The model requires a land use scenario as well. We load that here. The land use scenario is just an Excel sheet with the total number of households of different types (e.g. levels of vehicle ownership, income) in each Census tract, the number of jobs in each Census tract, and the locations of the Census tracts.
