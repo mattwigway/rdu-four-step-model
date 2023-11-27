@@ -1,0 +1,51 @@
+---
+title: Create scenarios
+---
+
+```{r}
+library(tidyverse)
+library(sf)
+library(tigris)
+library(bf4sm)
+```
+
+```{r}
+baseline = load_landuse_scenario("baseline.xlsx")
+```
+
+```{r}
+projected = baseline
+projected$marginals = projected$marginals %>%
+    mutate(count=count * 1.255, moe = moe * 1.255)
+projected$jobs = projected$jobs %>% mutate(across(starts_with("C"), \(x) x * 1.255))
+save_landuse_scenario(projected, "projected.xlsx")
+```
+
+```{r}
+# figure the additional population/households
+addl_hh = projected$marginals %>%
+    filter(marginal == "vehicles") %>%
+    with(sum(count)) -
+    baseline$marginals %>%
+    filter(marginal == "vehicles") %>%
+    with(sum(count))
+
+# We're putting them all in 27701, 27708, 27705, 27707, 27514, 27516, 27510, 27599, 27603, 27605
+zips = zctas(starts_with=c("27701", "27708", "27705", "27707", "27514", "27516", "27510", "27599", "27603", "27601", "27605", "27604"))
+tr = tracts(state="NC", county=c("Orange", "Durham", "Wake"), year=2021)
+trz = st_join(tr, zips) %>%
+    filter(!is.na(ZCTA5CE20))
+
+compact = baseline
+sum_in_tracts = compact$marginals %>%
+    filter(geoid %in% trz$GEOID & marginal == "vehicles") %>%
+    with(sum(count))
+scale_factor = 1 + addl_hh / sum_in_tracts
+compact$marginals = compact$marginals %>%
+    mutate(count=ifelse(geoid %in% trz$GEOID, count * scale_factor, count),
+        moe=ifelse(geoid %in% trz$GEOID, moe * scale_factor, moe))
+
+# no change to employment scenario
+compact$jobs = compact$jobs %>% mutate(across(starts_with("C"), \(x) x * 1.255))
+save_landuse_scenario(compact, "compact.xlsx")
+```
