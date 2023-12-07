@@ -33,7 +33,7 @@ I have provided several land use scenarios:
     - `projected.xlsx` - This is the 2030 projected scenario, based roughly on our demographic projections from a few weeks back
     - `compact.xlsx` - This is a 2030 projected scenario where growth is concentrated in downtown Durham, Raleigh, and Chapel Hill
 
-By changing the R code below, you can change what scenario is loaded. Run the cell to load the baseline scenario.
+By changing the R code below, you can change what scenario is loaded. Run the cell to load the projected scenario.
 
 ```{r}
 landuse = load_landuse_scenario("projected.xlsx")
